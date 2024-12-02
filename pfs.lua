@@ -1,3 +1,25 @@
+local zombie = script.Parent
+local humanoid = zombie:WaitForChild("Humanoid")
+
+local animator = zombie:WaitForChild("Humanoid"):FindFirstChildOfClass("Animator")
+local anim = Instance.new("Animation")
+anim.AnimationId = "rbxassetid://616163682"
+local track = animator:LoadAnimation(anim)
+track.Looped = true
+track:Play()
+
+local hd = Instance.new("HumanoidDescription")
+hd.Face = 173789114
+hd.HeadColor = Color3.new(0, 0.5, 0)
+hd.RightArmColor = Color3.new(0, 0.5, 0)
+hd.LeftArmColor = Color3.new(0, 0.5, 0)
+
+humanoid:ApplyDescription(hd)
+
+local PFS = game:GetService("PathfindingService")
+local RUNSERVICE = game:GetService("RunService")
+local players = game:GetService("Players")
+
 function findTarget()
 	local max = 100
 	local target = nil
