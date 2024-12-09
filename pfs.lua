@@ -19,7 +19,15 @@ humanoid:ApplyDescription(hd)
 local PFS = game:GetService("PathfindingService")
 local RUNSERVICE = game:GetService("RunService")
 local players = game:GetService("Players")
+-------------------------
+local clone = zombie:Clone()
+clone.Parent = game.ReplicatedStorage
 
+local function respawn()
+	wait(3)
+	clone.Parent = zombie.Parent
+end
+----------------------------
 function findTarget()
 	local max = 100
 	local target = nil
@@ -53,14 +61,21 @@ local function pathFindTo(dest)
 	end
 end
 
+local function attack(part)
+	local player = part.Parent
+	local humanoid = player:FindFirstChildWhichIsA("Humanoid")
+	
+	if humanoid then
+		humanoid.Health = humanoid.Health - 1
+	end
+end
+
+zombie.HumanoidRootPart.Touched:Connect(attack)
+
 RUNSERVICE.Heartbeat:Connect(function()	
 	local target = findTarget()
 	if target then
 		pathFindTo(target.Character:WaitForChild("HumanoidRootPart").Position)
 	end
-	if not isAlive() then
-		humanoid.DisplayDistanceType = "None"
-		wait(20)
-		zombie:Destroy()
-	end
+	respawn()
 end)
